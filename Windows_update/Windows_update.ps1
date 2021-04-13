@@ -39,14 +39,14 @@ If ($SearchResult.Updates.Count -eq 0) {
     Exit
 }
  
-#Write-Host("")
-#Write-Host("Creating collection of updates to download:") -Fore Green
+Write-Host("")
+Write-Host("Creating collection of updates to download:") -Fore Green
  
 $UpdatesToDownload = New-Object -Com Microsoft.Update.UpdateColl
  
 For ($X = 0; $X -lt $SearchResult.Updates.Count; $X++){
     $Update = $SearchResult.Updates.Item($X)
-    #Write-Host( ($X + 1).ToString() + "&gt; Adding: " + $Update.Title)
+    Write-Host( ($X + 1).ToString() + "&gt; Adding: " + $Update.Title)
     $Null = $UpdatesToDownload.Add($Update)
 }
  
@@ -57,15 +57,15 @@ $Downloader = $UpdateSession.CreateUpdateDownloader()
 $Downloader.Updates = $UpdatesToDownload
 $Null = $Downloader.Download()
  
-#Write-Host("")
-#Write-Host("List of Downloaded Updates...") -Fore Green
+Write-Host("")
+Write-Host("List of Downloaded Updates...") -Fore Green
  
 $UpdatesToInstall = New-Object -Com Microsoft.Update.UpdateColl
  
 For ($X = 0; $X -lt $SearchResult.Updates.Count; $X++){
     $Update = $SearchResult.Updates.Item($X)
     If ($Update.IsDownloaded) {
-        #Write-Host( ($X + 1).ToString() + "&gt; " + $Update.Title)
+        Write-Host( ($X + 1).ToString() + "&gt; " + $Update.Title)
         $Null = $UpdatesToInstall.Add($Update)        
     }
 }
