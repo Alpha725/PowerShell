@@ -4,7 +4,7 @@
 ##    - after running it will kill the WinRM Service and you need to reconnect another way to restart the 
 ##      service. I used another remote tool 
 
-$servers = Get-WsusComputer -ComputerTargetGroups 'Manual Patching'  | Where-Object {$_.FullDomainName -cnotlike "*hyp*"}
+$servers = Get-WsusComputer -ComputerTargetGroups 'Manual Patching' 
 foreach ($server in $servers) {
     $computer = $server.FullDomainName
     write-host configuring $computer
