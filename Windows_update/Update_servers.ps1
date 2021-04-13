@@ -3,7 +3,7 @@
 ## you will need to run ./wmiobject_fix.ps1 before this works
 ## Note you can pull the server name as you wish, just change out the $servers variable
 
-$servers = Get-WsusComputer -ComputerTargetGroups 'Manual Patching'  | Where-Object {$_.FullDomainName -cnotlike "*wsus*"}
+$servers = Get-WsusComputer -ComputerTargetGroups 'Manual Patching'  | Where-Object {$_.FullDomainName -cnotlike "*wsus*"} | Where-Object {$_.FullDomainName -cnotlike "*hyp*"}
 
 foreach ($server in $servers) {
     $computer = $server.FullDomainName
