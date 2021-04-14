@@ -9,7 +9,32 @@ foreach ($server in $servers) {
     $computer = $server.FullDomainName
     write-host starting update on $computer
     copy c:\Windows\System32\Windows_update.ps1 \\$computer\c$\temp\
-    Invoke-Command -ComputerName $computer -ConfigurationName 'VirtualAccount' -Command {
-        Start-Process -FilePath "c:\temp\Windows_update.ps1" -ArgumentList "YES YES"
-    }
+    invoke-expression "cmd /c start powershell -Command {
+        write-host ===========$computer===========
+        Invoke-Command -ComputerName $computer -ConfigurationName 'VirtualAccount' -Command {
+            c:\temp\Windows_update.ps1 YES YES
+        }
+        write-host When read to reboot hit enter, if no reboot required exit the script
+        pause
+        Restart-Computer -ComputerName $computer
+    }"
+}
+write-host VMs are updating, once you have removed the snapshots and are ready to patch the hyper-v hosts
+pause
+
+$servers = Get-WsusComputer -ComputerTargetGroups 'Manual Patching'  | Where-Object {$_.FullDomainName -like "*hyp*"}
+
+foreach ($server in $servers) {
+    $computer = $server.FullDomainName
+    write-host starting update on $computer
+    copy c:\Windows\System32\Windows_update.ps1 \\$computer\c$\temp\
+    invoke-expression "cmd /c start powershell -Command {
+        write-host ===========$computer===========
+        Invoke-Command -ComputerName $computer -ConfigurationName 'VirtualAccount' -Command {
+            c:\temp\Windows_update.ps1 YES YES
+        }
+        write-host When read to reboot hit enter, if no reboot required exit the script
+        pause
+        Restart-Computer -ComputerName $computer
+    }"
 }
