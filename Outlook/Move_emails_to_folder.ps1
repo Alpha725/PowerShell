@@ -3,14 +3,14 @@
 Add-Type -assembly "Microsoft.Office.Interop.Outlook"
 $Outlook = New-Object -comobject Outlook.Application
 $namespace = $Outlook.GetNameSpace("MAPI")
-$emailaddress = 'example@example.com'
-$destinationfolder = 'example'
 
 ## Setting "system enviroment" variables
 
-$Inbox = $namespace.Folders.Item('Alex.Baxter@waterstons.com').folders.item('inbox')
-$Items = $namespace.Folders.Item('Alex.Baxter@waterstons.com').folders.item('inbox').items
-$emails = $namespace.Folders.Item('Alex.Baxter@waterstons.com').folders.item('inbox').items | Select-Object SenderName,SenderEmailAddress
+$emailaddress = 'example@example.com'
+$destinationfolder = 'example'
+$Inbox = $namespace.Folders.Item($emailaddress).folders.item('inbox')
+$Items = $namespace.Folders.Item($emailaddress).folders.item('inbox').items
+$emails = $namespace.Folders.Item($emailaddress).folders.item('inbox').items | Select-Object SenderName,SenderEmailAddress
 
 ## Getting all of the emails as an array (could be better)
 
